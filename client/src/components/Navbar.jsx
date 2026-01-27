@@ -24,6 +24,7 @@ const Navbar = () => {
                 <div className="nav-links">
                     <Link to="/products">Products</Link>
                     <Link to="/upload-prescription">Upload</Link>
+                    <Link to="/about">About Us</Link>
                     <Link to="/contact">Contact</Link>
 
                     {user ? (

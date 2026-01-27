@@ -11,6 +11,7 @@ import UploadPrescription from './pages/UploadPrescription';
 import Contact from './pages/Contact';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
+import AboutUs from './pages/AboutUs';
 
 function App() {
     return (
@@ -27,6 +28,7 @@ function App() {
                             <Route path="/products" element={<Products />} />
                             <Route path="/upload-prescription" element={<UploadPrescription />} />
                             <Route path="/contact" element={<Contact />} />
+                            <Route path="/about" element={<AboutUs />} />
 
                             {/* Secret Admin Routes */}
                             <Route path="/admin-portal" element={<AdminLogin />} />
