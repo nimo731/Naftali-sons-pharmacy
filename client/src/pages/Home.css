@@ -1,71 +1,165 @@
-.hero {
-    padding: 6rem 0;
-    background: linear-gradient(135deg, #e0f2f1 0%, #ffffff 100%);
+.hero-slider {
+    position: relative;
+    height: 600px;
     overflow: hidden;
 }
 
-.hero-content {
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 1;
+}
+
+.slide.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.slide-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 4rem;
 }
 
-.hero-text {
+.slide-text {
     flex: 1;
 }
 
-.hero-text h1 {
-    font-size: 3.5rem;
-    color: var(--accent);
+.slide-label {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
     margin-bottom: 1.5rem;
-    line-height: 1.1;
+    letter-spacing: 0.1em;
 }
 
-.subtitle {
-    font-size: 1.5rem;
+.slide-text h2 {
+    font-size: 4rem;
     color: var(--primary);
-    font-weight: 600;
-    margin-bottom: 1rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
 }
 
-.description {
-    font-size: 1.125rem;
-    color: var(--text-muted);
+.slide-text p {
+    font-size: 1.25rem;
+    color: var(--text-main);
     margin-bottom: 2.5rem;
-    max-width: 500px;
 }
 
-.hero-btns {
-    display: flex;
-    gap: 1.5rem;
+.slide-image {
+    flex: 1.2;
+    text-align: right;
 }
 
-.btn-lg {
-    padding: 1rem 2rem;
-    font-size: 1.125rem;
-}
-
-.hero-image {
-    flex: 1;
-    position: relative;
-}
-
-.hero-image img {
-    width: 100%;
+.slide-image img {
+    max-width: 100%;
+    max-height: 500px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
-    transform: rotate(2deg);
+    transform: perspective(1000px) rotateY(-5deg);
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--primary);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: var(--transition);
 }
 
-.hero-image img:hover {
-    transform: rotate(0deg) scale(1.02);
+.slider-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.slider-btn.prev {
+    left: 2rem;
+}
+
+.slider-btn.next {
+    right: 2rem;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 1rem;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background: var(--primary);
+    width: 30px;
+    border-radius: var(--radius-full);
+}
+
+/* Trust Badges */
+.trust-badges {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    padding: 3rem 1.5rem;
+    background: white;
+    margin-top: -30px;
+    position: relative;
+    z-index: 5;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.badge-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.badge-item svg {
+    color: var(--primary);
+}
+
+.badge-item h4 {
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+.badge-item p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
 }
 
 .section-title {
     text-align: center;
     font-size: 2.5rem;
-    margin: 4rem 0 3rem;
+    margin: 5rem 0 3rem;
     color: var(--accent);
 }
 
@@ -140,20 +234,25 @@
 }
 
 @media (max-width: 968px) {
-    .hero-content {
+    .hero-slider {
+        height: auto;
+    }
+
+    .slide-content {
         flex-direction: column;
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+
+    .slide-image {
         text-align: center;
     }
 
-    .hero-text h1 {
+    .slide-text h2 {
         font-size: 2.5rem;
     }
 
-    .description {
-        margin: 0 auto 2.5rem;
-    }
-
-    .hero-btns {
-        justify-content: center;
+    .slider-btn {
+        display: none;
     }
 }
