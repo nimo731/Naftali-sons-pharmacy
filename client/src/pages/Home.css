@@ -1,0 +1,159 @@
+.hero {
+    padding: 6rem 0;
+    background: linear-gradient(135deg, #e0f2f1 0%, #ffffff 100%);
+    overflow: hidden;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero-text h1 {
+    font-size: 3.5rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.description {
+    font-size: 1.125rem;
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+}
+
+.hero-btns {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+}
+
+.hero-image {
+    flex: 1;
+    position: relative;
+}
+
+.hero-image img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    transform: rotate(2deg);
+    transition: var(--transition);
+}
+
+.hero-image img:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin: 4rem 0 3rem;
+    color: var(--accent);
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.service-card {
+    padding: 2.5rem;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    transition: var(--transition);
+    border: 1px solid #f1f5f9;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-light);
+}
+
+.service-icon {
+    width: 64px;
+    height: 64px;
+    background: #e0f2f1;
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.service-card h3 {
+    margin-bottom: 1rem;
+}
+
+.service-card p {
+    color: var(--text-muted);
+}
+
+.quick-action {
+    padding: 6rem 0;
+}
+
+.action-box {
+    padding: 4rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--text-white);
+}
+
+.action-box h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.action-box p {
+    font-size: 1.25rem;
+    margin-bottom: 2.5rem;
+    opacity: 0.9;
+}
+
+.action-box .btn-primary {
+    background: var(--text-white);
+    color: var(--primary);
+}
+
+@media (max-width: 968px) {
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+
+    .description {
+        margin: 0 auto 2.5rem;
+    }
+
+    .hero-btns {
+        justify-content: center;
+    }
+}
