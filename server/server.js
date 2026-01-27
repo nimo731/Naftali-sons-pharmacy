@@ -15,6 +15,7 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/prescriptions', require('./routes/prescriptionRoutes'));
+app.use('/api/messages', require('./routes/messageRoutes'));
 
 app.get('/', (req, res) => {
     res.send('Pharmacy API is running...');

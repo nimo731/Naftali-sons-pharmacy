@@ -1,10 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import { Mail, Phone, MapPin, Clock } from 'lucide-react';
 import './Contact.css';
 
 const Contact = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        subject: '',
+        message: ''
+    });
+    const [status, setStatus] = useState({ type: '', message: '' });
+    const [loading, setLoading] = useState(false);
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            await axios.post('http://localhost:5000/api/messages', formData);
+            setStatus({ type: 'success', message: 'Message sent! We\'ll get back to you soon.' });
+            setFormData({ name: '', email: '', subject: '', message: '' });
+        } catch (error) {
+            setStatus({ type: 'error', message: 'Failed to send message. Please try again.' });
+        }
+        setLoading(false);
+    };
+
     return (
-        <div className="contact-page container">
+        <div className="contact-page container animate-fade">
             <div className="contact-header">
                 <h1>Get in Touch</h1>
                 <p>We're here to help with your health and medication needs.</p>
@@ -49,27 +76,62 @@ const Contact = () => {
                     </div>
                 </div>
 
-                <form className="contact-form glass">
+                <form className="contact-form glass" onSubmit={handleSubmit}>
                     <h2>Send a Message</h2>
+                    {status.message && (
+                        <div className={`status-msg ${status.type}`}>
+                            {status.message}
+                        </div>
+                    )}
                     <div className="form-row">
                         <div className="form-group">
                             <label>Your Name</label>
-                            <input type="text" placeholder="John Doe" required />
+                            <input
+                                type="text"
+                                name="name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                placeholder="John Doe"
+                                required
+                            />
                         </div>
                         <div className="form-group">
                             <label>Email Address</label>
-                            <input type="email" placeholder="john@example.com" required />
+                            <input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="john@example.com"
+                                required
+                            />
                         </div>
                     </div>
                     <div className="form-group">
                         <label>Subject</label>
-                        <input type="text" placeholder="How can we help?" required />
+                        <input
+                            type="text"
+                            name="subject"
+                            value={formData.subject}
+                            onChange={handleChange}
+                            placeholder="How can we help?"
+                            required
+                        />
                     </div>
                     <div className="form-group">
                         <label>Message</label>
-                        <textarea rows="5" placeholder="Type your message here..." required></textarea>
+                        <textarea
+                            rows="5"
+                            name="message"
+                            value={formData.message}
+                            onChange={handleChange}
+                            placeholder="Type your message here..."
+                            required
+                        ></textarea>
                     </div>
-                    <button type="submit" className="btn btn-primary w-full">Send Message</button>
+                    <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+                        {loading ? 'Sending...' : 'Send Message'}
+                    </button>
                 </form>
             </div>
         </div>

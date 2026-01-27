@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { LayoutDashboard, Package, FileText, User, Check, X, Eye } from 'lucide-react';
+import { LayoutDashboard, Package, FileText, User, Check, X, Eye, MessageSquare, Trash2 } from 'lucide-react';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -9,18 +9,21 @@ const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('prescriptions');
     const [prescriptions, setPrescriptions] = useState([]);
     const [products, setProducts] = useState([]);
+    const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchAdminData = async () => {
             try {
                 const config = { headers: { Authorization: `Bearer ${user.token}` } };
-                const [prescRes, prodRes] = await Promise.all([
+                const [prescRes, prodRes, msgRes] = await Promise.all([
                     axios.get('http://localhost:5000/api/prescriptions', config),
-                    axios.get('http://localhost:5000/api/products')
+                    axios.get('http://localhost:5000/api/products'),
+                    axios.get('http://localhost:5000/api/messages', config)
                 ]);
                 setPrescriptions(prescRes.data);
                 setProducts(prodRes.data);
+                setMessages(msgRes.data);
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching admin data:', error);
@@ -30,11 +33,11 @@ const AdminDashboard = () => {
         if (user?.role === 'admin') fetchAdminData();
     }, [user]);
 
-    if (user?.role !== 'admin') return <div className="container">Access Denied</div>;
+    if (user?.role !== 'admin') return <div className="container" style={{ padding: '5rem', textAlign: 'center' }}>Access Denied</div>;
 
     return (
-        <div className="admin-dashboard container">
-            <aside className="admin-sidebar">
+        <div className="admin-dashboard container-fluid">
+            <aside className="admin-sidebar shadow-lg">
                 <div className="sidebar-header">
                     <LayoutDashboard size={24} />
                     <h2>Admin Panel</h2>
@@ -43,8 +46,11 @@ const AdminDashboard = () => {
                     <button className={activeTab === 'prescriptions' ? 'active' : ''} onClick={() => setActiveTab('prescriptions')}>
                         <FileText size={20} /> Prescriptions
                     </button>
+                    <button className={activeTab === 'messages' ? 'active' : ''} onClick={() => setActiveTab('messages')}>
+                        <MessageSquare size={20} /> Messages
+                    </button>
                     <button className={activeTab === 'products' ? 'active' : ''} onClick={() => setActiveTab('products')}>
-                        <Package size={20} /> Manage Products
+                        <Package size={20} /> Products
                     </button>
                 </nav>
             </aside>
@@ -53,22 +59,64 @@ const AdminDashboard = () => {
                 {loading ? (
                     <div className="loader">Loading Dashboard...</div>
                 ) : (
-                    <>
+                    <div className="admin-content-card glass animate-fade">
                         {activeTab === 'prescriptions' && (
-                            <PrescriptionManager prescriptions={prescriptions} setPrescriptions={setPrescriptions} />
+                            <PrescriptionManager prescriptions={prescriptions} />
+                        )}
+                        {activeTab === 'messages' && (
+                            <MessageManager messages={messages} />
                         )}
                         {activeTab === 'products' && (
-                            <ProductManager products={products} setProducts={setProducts} />
+                            <ProductManager products={products} />
                         )}
-                    </>
+                    </div>
                 )}
             </main>
         </div>
     );
 };
 
-const PrescriptionManager = ({ prescriptions, setPrescriptions }) => (
-    <section className="admin-section animate-fade">
+const MessageManager = ({ messages }) => (
+    <section className="admin-section">
+        <div className="section-header">
+            <h2>Inquiries & Messages</h2>
+            <span className="badge">{messages.length} Pending</span>
+        </div>
+        <div className="table-responsive">
+            <table className="admin-table">
+                <thead>
+                    <tr>
+                        <th>From</th>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {messages.map(m => (
+                        <tr key={m._id}>
+                            <td>
+                                <div className="user-info">
+                                    <span className="name">{m.name}</span>
+                                    <span className="email">{m.email}</span>
+                                </div>
+                            </td>
+                            <td className="msg-subject">{m.subject}</td>
+                            <td>{new Date(m.createdAt).toLocaleDateString()}</td>
+                            <td className="actions">
+                                <button title="Read Message"><Eye size={18} /></button>
+                                <button title="Delete" className="text-error"><Trash2 size={18} /></button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    </section>
+);
+
+const PrescriptionManager = ({ prescriptions }) => (
+    <section className="admin-section">
         <div className="section-header">
             <h2>Prescription Requests</h2>
             <span className="badge">{prescriptions.length} Total</span>
@@ -90,7 +138,6 @@ const PrescriptionManager = ({ prescriptions, setPrescriptions }) => (
                             <td>
                                 <div className="user-info">
                                     <span className="name">{p.patientName}</span>
-                                    <span className="email">{p.user.email}</span>
                                 </div>
                             </td>
                             <td className="capitalize">{p.deliveryType}</td>
@@ -110,9 +157,9 @@ const PrescriptionManager = ({ prescriptions, setPrescriptions }) => (
 );
 
 const ProductManager = ({ products }) => (
-    <section className="admin-section animate-fade">
+    <section className="admin-section">
         <div className="section-header">
-            <h2>Products Inventory</h2>
+            <h2>Inventory</h2>
             <button className="btn btn-primary btn-sm">+ Add Product</button>
         </div>
         <div className="table-responsive">
@@ -122,7 +169,6 @@ const ProductManager = ({ products }) => (
                         <th>Product</th>
                         <th>Category</th>
                         <th>Price</th>
-                        <th>Stock</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -135,10 +181,9 @@ const ProductManager = ({ products }) => (
                             </td>
                             <td>{p.category}</td>
                             <td>KES {p.price}</td>
-                            <td>{p.stockQuantity}</td>
                             <td className="actions">
-                                <button>Edit</button>
-                                <button className="text-error">Delete</button>
+                                <button className="text-primary">Edit</button>
+                                <button className="text-error"><Trash2 size={18} /></button>
                             </td>
                         </tr>
                     ))}

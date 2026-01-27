@@ -28,7 +28,6 @@ const Navbar = () => {
 
                     {user ? (
                         <div className="nav-user">
-                            {user.role === 'admin' && <Link to="/admin">Dashboard</Link>}
                             <span className="user-name"><User size={18} /> {user.name}</span>
                             <button onClick={handleLogout} className="btn-logout"><LogOut size={18} /></button>
                         </div>
