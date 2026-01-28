@@ -1,258 +1,394 @@
-.hero-slider {
-    position: relative;
-    height: 600px;
-    overflow: hidden;
+.home-overhaul {
+    padding-bottom: 5rem;
 }
 
-.slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+.hero-section {
+    position: relative;
+    height: 80vh;
+    min-height: 650px;
+    margin-top: 1rem;
+}
+
+.slider-wrapper {
     height: 100%;
+    position: relative;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     opacity: 0;
-    transition: opacity 0.8s ease-in-out;
-    z-index: 1;
+    visibility: hidden;
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.slide.active {
+.hero-slide.active {
     opacity: 1;
-    z-index: 2;
+    visibility: visible;
 }
 
-.slide-content {
-    display: flex;
+.slide-inner {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
     align-items: center;
-    justify-content: space-between;
     gap: 4rem;
 }
 
-.slide-text {
-    flex: 1;
+.content-box {
+    transform: translateX(-50px);
+    opacity: 0;
+    transition: all 0.8s 0.3s ease-out;
 }
 
-.slide-label {
+.hero-slide.active .content-box {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.badge-new {
     display: inline-block;
-    background: var(--accent);
-    color: white;
     padding: 0.5rem 1rem;
+    background: rgba(0, 137, 123, 0.1);
+    color: var(--primary);
+    border-radius: var(--radius-sm);
     font-weight: 700;
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.1em;
-}
-
-.slide-text h2 {
-    font-size: 4rem;
-    color: var(--primary);
-    line-height: 1.1;
+    font-size: 0.8rem;
+    text-transform: uppercase;
     margin-bottom: 1.5rem;
 }
 
-.slide-text p {
-    font-size: 1.25rem;
-    color: var(--text-main);
-    margin-bottom: 2.5rem;
-}
-
-.slide-image {
-    flex: 1.2;
-    text-align: right;
-}
-
-.slide-image img {
-    max-width: 100%;
-    max-height: 500px;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    transform: perspective(1000px) rotateY(-5deg);
-}
-
-.slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    background: rgba(255, 255, 255, 0.5);
-    color: var(--primary);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.slider-btn:hover {
-    background: var(--primary);
-    color: white;
-}
-
-.slider-btn.prev {
-    left: 2rem;
-}
-
-.slider-btn.next {
-    right: 2rem;
-}
-
-.slider-dots {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    display: flex;
-    gap: 1rem;
-}
-
-.dot {
-    width: 12px;
-    height: 12px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.dot.active {
-    background: var(--primary);
-    width: 30px;
-    border-radius: var(--radius-full);
-}
-
-/* Trust Badges */
-.trust-badges {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    padding: 3rem 1.5rem;
-    background: white;
-    margin-top: -30px;
-    position: relative;
-    z-index: 5;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-}
-
-.badge-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.badge-item svg {
-    color: var(--primary);
-}
-
-.badge-item h4 {
-    font-size: 0.9rem;
-    margin-bottom: 2px;
-}
-
-.badge-item p {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-}
-
-.section-title {
-    text-align: center;
-    font-size: 2.5rem;
-    margin: 5rem 0 3rem;
+.hero-title {
+    font-size: 4.5rem;
+    line-height: 1;
+    margin-bottom: 1.5rem;
     color: var(--accent);
 }
 
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
+.hero-desc {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+    max-width: 500px;
 }
 
-.service-card {
-    padding: 2.5rem;
-    background: var(--bg-card);
+.hero-actions {
+    display: flex;
+    gap: 1.5rem;
+}
+
+/* Image Box Effects */
+.image-box {
+    position: relative;
+    transform: scale(0.9) rotate(5deg);
+    opacity: 0;
+    transition: all 0.8s 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-slide.active .image-box {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+}
+
+.image-blob {
+    position: absolute;
+    inset: -20px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    z-index: -1;
+    opacity: 0.2;
+    animation: blobby 10s infinite alternate;
+}
+
+@keyframes blobby {
+    to {
+        border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+    }
+}
+
+.main-img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    text-align: center;
-    transition: var(--transition);
-    border: 1px solid #f1f5f9;
+    box-shadow: var(--shadow-xl);
 }
 
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-lg);
-    border-color: var(--primary-light);
+.floating-card {
+    position: absolute;
+    bottom: 2rem;
+    left: -2rem;
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 700;
+    font-size: 0.9rem;
 }
 
-.service-icon {
-    width: 64px;
-    height: 64px;
-    background: #e0f2f1;
-    color: var(--primary);
+/* Slider Controls */
+.slider-controls {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    z-index: 100;
+}
+
+.ctrl-btn {
+    background: white;
+    border: 1px solid #e2e8f0;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem;
+    transition: var(--transition);
 }
 
-.service-card h3 {
-    margin-bottom: 1rem;
+.ctrl-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
 }
 
-.service-card p {
+.dot-indicators {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background: #cbd5e1;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.dot.active {
+    width: 24px;
+    background: var(--primary);
+    border-radius: var(--radius-full);
+}
+
+/* Value Strip */
+.value-strip {
+    margin-top: -4rem;
+    position: relative;
+    z-index: 200;
+}
+
+.strip-inner {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius-lg);
+}
+
+.value-item {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.vi-icon {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.vi-text h5 {
+    font-size: 0.95rem;
+    color: var(--accent);
+}
+
+.vi-text p {
+    font-size: 0.8rem;
     color: var(--text-muted);
 }
 
-.quick-action {
-    padding: 6rem 0;
+/* Category Cards */
+.section-padding {
+    padding: 8rem 0;
 }
 
-.action-box {
-    padding: 4rem;
-    border-radius: var(--radius-lg);
+.section-header-centered {
     text-align: center;
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: var(--text-white);
+    margin-bottom: 4rem;
 }
 
-.action-box h2 {
-    font-size: 2.5rem;
+.sub-title {
+    color: var(--primary);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    display: block;
     margin-bottom: 1rem;
 }
 
-.action-box p {
-    font-size: 1.25rem;
+.category-reveal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.cat-reveal-card {
+    position: relative;
+    height: 450px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding: 2.5rem;
+    color: white;
+}
+
+.cat-reveal-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, transparent 60%);
+    z-index: 1;
+}
+
+.card-content {
+    position: relative;
+    z-index: 2;
+    transition: var(--transition);
+}
+
+.cat-reveal-card h3 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.shop-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: var(--transition);
+}
+
+.cat-reveal-card:hover img {
+    transform: scale(1.1);
+}
+
+.cat-reveal-card:hover .card-content {
+    transform: translateY(-10px);
+}
+
+.cat-reveal-card:hover .shop-link {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Prescription CTA Overhaul */
+.cta-card {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    border-radius: var(--radius-lg);
+    min-height: 450px;
+}
+
+.cta-content {
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.cta-content h2 {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+}
+
+.cta-content p {
+    font-size: 1.125rem;
+    color: var(--text-muted);
     margin-bottom: 2.5rem;
-    opacity: 0.9;
 }
 
-.action-box .btn-primary {
-    background: var(--text-white);
-    color: var(--primary);
+.cta-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
 }
 
-@media (max-width: 968px) {
-    .hero-slider {
-        height: auto;
+.c-step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.c-step span {
+    width: 32px;
+    height: 32px;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 0.9rem;
+}
+
+.cta-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mt-2 {
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 3rem;
     }
 
-    .slide-content {
-        flex-direction: column;
-        text-align: center;
-        padding: 4rem 2rem;
+    .strip-inner {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
     }
 
-    .slide-image {
-        text-align: center;
+    .category-reveal-grid {
+        grid-template-columns: 1fr;
     }
 
-    .slide-text h2 {
-        font-size: 2.5rem;
+    .cta-card {
+        grid-template-columns: 1fr;
     }
 
-    .slider-btn {
-        display: none;
+    .cta-visual {
+        border-top: 1px solid #e2e8f0;
     }
 }

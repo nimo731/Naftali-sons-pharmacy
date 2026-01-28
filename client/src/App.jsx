@@ -12,12 +12,14 @@ import Contact from './pages/Contact';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminLogin from './pages/AdminLogin';
 import AboutUs from './pages/AboutUs';
+import AnimatedBackground from './components/AnimatedBackground';
 
 function App() {
     return (
         <AuthProvider>
             <Router>
                 <div className="app">
+                    <AnimatedBackground />
                     <Navbar />
                     <main style={{ minHeight: '80vh' }}>
                         <Routes>

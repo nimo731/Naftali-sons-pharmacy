@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Mail, Phone, MapPin, Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, MessageSquareText } from 'lucide-react';
 import './Contact.css';
 
 const Contact = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-    });
+    const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
     const [status, setStatus] = useState({ type: '', message: '' });
     const [loading, setLoading] = useState(false);
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,117 +16,78 @@ const Contact = () => {
             setStatus({ type: 'success', message: 'Message sent! We\'ll get back to you soon.' });
             setFormData({ name: '', email: '', subject: '', message: '' });
         } catch (error) {
-            setStatus({ type: 'error', message: 'Failed to send message. Please try again.' });
+            setStatus({ type: 'error', message: 'Failed to send message.' });
         }
         setLoading(false);
     };
 
     return (
-        <div className="contact-page container animate-fade">
-            <div className="contact-header">
-                <h1>Get in Touch</h1>
-                <p>We're here to help with your health and medication needs.</p>
-            </div>
+        <div className="contact-overhaul section-padding animate-fade">
+            <div className="container">
+                <div className="contact-card-wrapper glass">
+                    <div className="contact-sidebar bg-primary-dark">
+                        <h2 className="text-white">Reach Out to Us</h2>
+                        <p className="text-white-50">Have questions about your medication or orders? We're here 24/7 to support your needs.</p>
 
-            <div className="contact-grid">
-                <div className="contact-info">
-                    <div className="info-card glass">
-                        <div className="info-icon"><Phone color="white" /></div>
-                        <div>
-                            <h3>Call Us</h3>
-                            <p>+254 700 000000</p>
-                            <p>+254 711 000000</p>
+                        <div className="contact-methods">
+                            <ContactLink icon={<Phone />} title="Emergency Line" val="+254 700 000000" />
+                            <ContactLink icon={<Mail />} title="Support Email" val="help@naftali.com" />
+                            <ContactLink icon={<MapPin />} title="Main HQ" val="123 Health Ave, Nairobi" />
+                            <ContactLink icon={<Clock />} title="Opening Hours" val="Mon-Sat: 8am - 9pm" />
+                        </div>
+
+                        <div className="social-group">
+                            {/* Icons could go here */}
                         </div>
                     </div>
 
-                    <div className="info-card glass">
-                        <div className="info-icon"><Mail color="white" /></div>
-                        <div>
-                            <h3>Email</h3>
-                            <p>info@naftalipharmacy.com</p>
-                            <p>support@naftalipharmacy.com</p>
+                    <div className="contact-main">
+                        <div className="form-header">
+                            <MessageSquareText size={40} color="var(--primary)" />
+                            <h3>Write us a message</h3>
+                            <p>Our pharmacists usually respond within 15 minutes.</p>
                         </div>
-                    </div>
 
-                    <div className="info-card glass">
-                        <div className="info-icon"><MapPin color="white" /></div>
-                        <div>
-                            <h3>Location</h3>
-                            <p>Main Branch: 123 Health Ave, Nairobi</p>
-                            <p>Westlands: 45 Cure Rd, Nairobi</p>
-                        </div>
-                    </div>
+                        {status.message && <div className={`status-pill ${status.type}`}>{status.message}</div>}
 
-                    <div className="info-card glass">
-                        <div className="info-icon"><Clock color="white" /></div>
-                        <div>
-                            <h3>Working Hours</h3>
-                            <p>Mon - Sat: 8:00 AM - 9:00 PM</p>
-                            <p>Sun: 10:00 AM - 4:00 PM</p>
-                        </div>
+                        <form onSubmit={handleSubmit} className="modern-form">
+                            <div className="input-row">
+                                <div className="field-group">
+                                    <label>Full Name</label>
+                                    <input type="text" placeholder="John Doe" required value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                                </div>
+                                <div className="field-group">
+                                    <label>Email Address</label>
+                                    <input type="email" placeholder="john@example.com" required value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                                </div>
+                            </div>
+                            <div className="field-group">
+                                <label>Inquiry Subject</label>
+                                <input type="text" placeholder="e.g. Prescription Status" required value={formData.subject} onChange={e => setFormData({ ...formData, subject: e.target.value })} />
+                            </div>
+                            <div className="field-group">
+                                <label>Message Content</label>
+                                <textarea rows="4" placeholder="How can we help you today?" required value={formData.message} onChange={e => setFormData({ ...formData, message: e.target.value })}></textarea>
+                            </div>
+                            <button type="submit" className="btn btn-primary w-full shadow-lg h-14" disabled={loading}>
+                                {loading ? 'Sending...' : 'Transmit Message'} <Send size={18} />
+                            </button>
+                        </form>
                     </div>
                 </div>
-
-                <form className="contact-form glass" onSubmit={handleSubmit}>
-                    <h2>Send a Message</h2>
-                    {status.message && (
-                        <div className={`status-msg ${status.type}`}>
-                            {status.message}
-                        </div>
-                    )}
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label>Your Name</label>
-                            <input
-                                type="text"
-                                name="name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                placeholder="John Doe"
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Email Address</label>
-                            <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                placeholder="john@example.com"
-                                required
-                            />
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label>Subject</label>
-                        <input
-                            type="text"
-                            name="subject"
-                            value={formData.subject}
-                            onChange={handleChange}
-                            placeholder="How can we help?"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>Message</label>
-                        <textarea
-                            rows="5"
-                            name="message"
-                            value={formData.message}
-                            onChange={handleChange}
-                            placeholder="Type your message here..."
-                            required
-                        ></textarea>
-                    </div>
-                    <button type="submit" className="btn btn-primary w-full" disabled={loading}>
-                        {loading ? 'Sending...' : 'Send Message'}
-                    </button>
-                </form>
             </div>
         </div>
     );
 };
+
+const ContactLink = ({ icon, title, val }) => (
+    <div className="c-link-item">
+        <div className="cl-icon">{icon}</div>
+        <div className="cl-meta">
+            <span>{title}</span>
+            <strong>{val}</strong>
+        </div>
+    </div>
+);
 
 export default Contact;
